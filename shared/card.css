@@ -1,0 +1,625 @@
+/* The question card and the Field Book drawer. All classes start with "pe-". */
+
+.pe-card,
+.pe-fb,
+.pe-btn {
+  --pe-accent: #3f74c9;
+  --pe-accent-soft: #e8f0fc;
+  --pe-ink: #1f2328;
+  --pe-muted: #5d6670;
+  --pe-line: #d9dde2;
+  --pe-right: #2f8a3a;
+  --pe-right-soft: #e9f6ea;
+  --pe-wrong: #c8352b;
+  --pe-wrong-soft: #fdecea;
+  --pe-radius: 10px;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--pe-ink);
+  line-height: 1.45;
+  box-sizing: border-box;
+}
+
+.pe-card *,
+.pe-card *::before,
+.pe-card *::after,
+.pe-fb *,
+.pe-fb *::before,
+.pe-fb *::after {
+  box-sizing: border-box;
+}
+
+/* ---- Card ---- */
+
+/* The card hides while an onAnswer hook runs. */
+.pe-card[hidden] {
+  display: none;
+}
+
+.pe-card {
+  width: 100%;
+  max-width: 640px;
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0 auto;
+  padding: 18px 18px 20px;
+  background: #fff;
+  border: 1px solid var(--pe-line);
+  border-radius: var(--pe-radius);
+  overflow-wrap: anywhere;
+}
+
+.pe-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px 10px;
+  flex-wrap: wrap;
+}
+
+.pe-card-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+
+.pe-badge {
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--pe-accent);
+  color: var(--pe-accent);
+  background: var(--pe-accent-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pe-timer {
+  min-width: 4.2em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--pe-muted);
+}
+
+.pe-timer.pe-over {
+  color: var(--pe-wrong);
+}
+
+.pe-prompt {
+  margin: 14px 0 0;
+  white-space: pre-line;
+  font-size: 1rem;
+}
+
+.pe-hint {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--pe-accent);
+  background: var(--pe-accent-soft);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.95rem;
+}
+
+.pe-hint-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pe-accent);
+}
+
+.pe-answer {
+  margin-top: 16px;
+}
+
+/* ---- Buttons ---- */
+
+.pe-btn {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid var(--pe-line);
+  background: #fff;
+  color: var(--pe-ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.pe-btn:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.pe-btn-main {
+  border-color: var(--pe-accent);
+  background: var(--pe-accent);
+  color: #fff;
+}
+
+.pe-btn-quiet {
+  color: var(--pe-accent);
+}
+
+.pe-btn:focus-visible,
+.pe-option:focus-visible,
+.pe-input:focus-visible,
+.pe-fb-link:focus-visible {
+  outline: 2px solid var(--pe-accent);
+  outline-offset: 2px;
+}
+
+.pe-book-btn.pe-marked {
+  border-color: var(--pe-accent);
+  background: var(--pe-accent-soft);
+}
+
+.pe-book-btn.pe-marked::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 12px;
+  margin-right: 8px;
+  background: var(--pe-accent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%);
+  vertical-align: -1px;
+}
+
+/* ---- Options ---- */
+
+.pe-options {
+  display: grid;
+  gap: 8px;
+}
+
+.pe-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid var(--pe-line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--pe-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+@media (hover: hover) {
+  .pe-option:not(:disabled):hover {
+    border-color: var(--pe-accent);
+  }
+}
+
+.pe-option:disabled {
+  cursor: default;
+}
+
+.pe-option[hidden] {
+  display: none;
+}
+
+.pe-option-letter {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--pe-line);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--pe-muted);
+}
+
+.pe-option-text {
+  min-width: 0;
+}
+
+.pe-option.pe-reveal {
+  outline: 2px dashed var(--pe-right);
+  outline-offset: 2px;
+}
+
+.pe-option.pe-is-answer {
+  border-color: var(--pe-right);
+  background: var(--pe-right-soft);
+}
+
+.pe-option.pe-chosen.pe-wrong {
+  border-color: var(--pe-wrong);
+  background: var(--pe-wrong-soft);
+}
+
+.pe-option.pe-chosen .pe-option-letter {
+  border-color: currentColor;
+}
+
+/* ---- Number field ---- */
+
+.pe-number-row {
+  display: flex;
+  gap: 8px;
+}
+
+.pe-number-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid var(--pe-line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.pe-number-label:focus-within {
+  border-color: var(--pe-accent);
+}
+
+.pe-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--pe-ink);
+  /* 16px or more stops the zoom on iPhone focus. */
+  font: inherit;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pe-input:focus-visible {
+  outline: 0;
+}
+
+.pe-unit {
+  flex: none;
+  color: var(--pe-muted);
+  font-weight: 600;
+}
+
+.pe-number.pe-right .pe-number-label {
+  border-color: var(--pe-right);
+  background: var(--pe-right-soft);
+}
+
+.pe-number.pe-wrong .pe-number-label {
+  border-color: var(--pe-wrong);
+  background: var(--pe-wrong-soft);
+}
+
+.pe-msg {
+  margin: 8px 0 0;
+  color: var(--pe-wrong);
+  font-size: 0.92rem;
+}
+
+.pe-reveal-value {
+  margin: 8px 0 0;
+  padding: 6px 10px;
+  border: 2px dashed var(--pe-right);
+  border-radius: 6px;
+  color: var(--pe-right);
+  font-weight: 600;
+}
+
+/* ---- Tools ---- */
+
+.pe-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.pe-tools .pe-btn {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pe-skip-btn {
+  margin-left: auto;
+}
+
+/* ---- Result ---- */
+
+.pe-result {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--pe-line);
+}
+
+.pe-result[hidden] {
+  display: none;
+}
+
+.pe-verdict {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.pe-verdict.pe-right {
+  color: var(--pe-right);
+}
+
+.pe-verdict.pe-wrong {
+  color: var(--pe-wrong);
+}
+
+.pe-right-answer,
+.pe-yours {
+  margin: 6px 0 0;
+}
+
+.pe-label {
+  color: var(--pe-muted);
+}
+
+.pe-why {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--pe-wrong);
+  background: var(--pe-wrong-soft);
+  border-radius: 0 6px 6px 0;
+}
+
+.pe-steps-head {
+  margin: 14px 0 4px;
+  font-size: 0.95rem;
+}
+
+.pe-steps {
+  margin: 0;
+  padding-left: 1.4em;
+}
+
+.pe-steps li {
+  margin: 4px 0;
+  white-space: pre-line;
+}
+
+.pe-continue {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+}
+
+/* ---- Field Book drawer ---- */
+
+.pe-fb-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(20, 24, 30, 0.28);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.pe-fb-backdrop.pe-open {
+  opacity: 1;
+}
+
+.pe-fb {
+  position: fixed;
+  z-index: 1001;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(720px, 92vw);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-left: 1px solid var(--pe-line);
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  outline: none;
+}
+
+.pe-fb.pe-open {
+  transform: none;
+}
+
+.pe-fb-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px 8px 16px;
+  border-bottom: 1px solid var(--pe-line);
+}
+
+.pe-fb-title {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.pe-fb-close {
+  width: 44px;
+  padding: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.pe-fb-index-btn {
+  display: none;
+}
+
+.pe-fb-cols {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+}
+
+.pe-fb-index {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 8px 16px;
+  border-right: 1px solid var(--pe-line);
+  background: #fafbfc;
+}
+
+.pe-fb-topic {
+  margin: 12px 8px 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pe-muted);
+}
+
+.pe-fb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pe-fb-link {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--pe-ink);
+  font: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pe-fb-link.pe-current {
+  background: var(--pe-accent-soft);
+  color: var(--pe-accent);
+  font-weight: 600;
+}
+
+.pe-fb-entry {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 20px 24px;
+  overflow-wrap: anywhere;
+}
+
+.pe-fb-entry-title {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+}
+
+.pe-fb-body {
+  font-size: 0.97rem;
+}
+
+.pe-fb-body p {
+  margin: 0.6em 0;
+}
+
+.pe-fb-body table {
+  border-collapse: collapse;
+  max-width: 100%;
+  display: block;
+  overflow-x: auto;
+}
+
+.pe-fb-body th,
+.pe-fb-body td {
+  padding: 4px 8px;
+  border: 1px solid var(--pe-line);
+  text-align: left;
+}
+
+.pe-fb-body code {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.93em;
+}
+
+.pe-fb-body .pe-formula {
+  margin: 0.7em 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--pe-accent);
+  background: var(--pe-accent-soft);
+  border-radius: 0 6px 6px 0;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.92em;
+  overflow-x: auto;
+}
+
+.pe-fb-cite {
+  margin: 16px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--pe-line);
+  color: var(--pe-muted);
+  font-size: 0.85rem;
+}
+
+.pe-fb-empty {
+  color: var(--pe-muted);
+}
+
+/* Phone: a bottom sheet, with the index or the entry, one at a time. */
+@media (max-width: 700px) {
+  .pe-card {
+    padding: 14px 14px 16px;
+  }
+
+  .pe-fb {
+    top: auto;
+    left: 0;
+    width: 100%;
+    height: 85dvh;
+    border-left: 0;
+    border-top: 1px solid var(--pe-line);
+    border-radius: 14px 14px 0 0;
+    transform: translateY(100%);
+  }
+
+  .pe-fb-cols {
+    display: block;
+    position: relative;
+  }
+
+  .pe-fb-index,
+  .pe-fb-entry {
+    position: absolute;
+    inset: 0;
+    border-right: 0;
+  }
+
+  .pe-fb-has-entry .pe-fb-index,
+  .pe-fb:not(.pe-fb-has-entry) .pe-fb-entry {
+    display: none;
+  }
+
+  .pe-fb-has-entry .pe-fb-index-btn {
+    display: inline-block;
+  }
+
+  .pe-fb-has-entry .pe-fb-title {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pe-fb,
+  .pe-fb-backdrop {
+    transition: none;
+  }
+}

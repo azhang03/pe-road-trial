@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Road builder (M2)</title>
+    <link rel="stylesheet" href="../shared/card.css" />
+    <link rel="stylesheet" href="road.css" />
+    <script type="importmap">
+      { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js" } }
+    </script>
+  </head>
+  <body>
+    <div id="scene"></div>
+
+    <header id="hud" aria-label="Run status"></header>
+    <div id="toasts" aria-live="polite"></div>
+    <section id="claims" hidden aria-live="polite"></section>
+
+    <section id="offer" class="sheet" hidden aria-label="Next segment">
+      <h2>Pick the next segment</h2>
+      <div class="offer-list"></div>
+    </section>
+
+    <section id="panel" class="sheet panel" hidden></section>
+
+    <div id="q-host"></div>
+
+    <section id="banner" class="banner" hidden aria-live="polite">
+      <div class="b-head">
+        <p class="b-title"></p>
+        <p class="b-money"></p>
+      </div>
+      <p class="b-text"></p>
+      <button type="button" class="b-next pe-btn pe-btn-main">Next</button>
+    </section>
+
+    <section id="summary" hidden aria-label="Summary">
+      <div class="s-card">
+        <h2 class="s-title"></h2>
+        <p class="s-sub"></p>
+        <table>
+          <thead>
+            <tr><th>Question type</th><th>Right</th><th>Wrong</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <dl>
+          <div><dt>Budget</dt><dd class="s-budget"></dd></div>
+          <div><dt>Fee</dt><dd class="s-fee"></dd></div>
+          <div><dt>Flaws</dt><dd class="s-flaws"></dd></div>
+          <div><dt>Extra earthwork</dt><dd class="s-earth"></dd></div>
+          <div class="wide"><dt>Opening day claims</dt><dd class="s-claims"></dd></div>
+        </dl>
+        <ul class="s-claim-list" hidden></ul>
+        <p class="s-best" hidden></p>
+        <div class="s-actions">
+          <button type="button" class="s-next pe-btn pe-btn-main" hidden>Continue</button>
+          <button type="button" class="s-new pe-btn pe-btn-main">New run</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="start" hidden aria-label="Start"></section>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
